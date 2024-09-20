@@ -18,10 +18,16 @@ heat = expression(
 		t = jnp.linspace(0, 1, num=100)    # for t domain
 		)
 
-u_model, params = heat.u()
-x = jnp.array([float(0), float(1)])
-u = lambda x, t: u_model.apply(params, jnp.array([x, t]))
-print(u(0, 1))
-ux = dx(u)
-print(type(ux))
-print(ux(0,1))
+if __name__ == '__main__':
+	import inspect
+	u_model, params = heat.u()
+	x = jnp.array([float(0), float(1)])
+	u = lambda x, t: u_model.apply(params, jnp.array([x, t]))[0]
+
+	print(u(0, 1))
+	ux = dx(u)
+	#print(inspect.getargspec(ux))
+	ux
+
+	print(type(ux))
+	print(ux(0,1))
