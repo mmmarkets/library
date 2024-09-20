@@ -20,7 +20,6 @@ from model import Model
 class expression:
     def __init__(self, function: Callable,
                  var: Tuple[str],
-                 boundary: Dict,
                  *args, **kwargs):
         # heat = expression(
         #     lambda u, x, t: u.dt() + u.dx().dx(),
@@ -41,8 +40,9 @@ class expression:
             if str(key) in self.variables:
                 self.domains.append(value)
 
-    def __call__(self, *args,
-                 U: Callable = lambda *args: None) -> float:
+    def loss(self, 
+                 U: Callable = lambda *args: None,
+		*args) -> float:
         # expression(x1, x2, ... , xn) -> float
         # expression(x1, x2, ... , xn, U=U_validation) -> float
 
