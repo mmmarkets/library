@@ -19,15 +19,20 @@ heat = expression(
 		)
 
 if __name__ == '__main__':
+	# test
 	import inspect
 	u_model, params = heat.u()
 	x = jnp.array([float(0), float(1)])
-	u = lambda x, t: u_model.apply(params, jnp.array([x, t]))[0]
+	u = lambda x, t: u_model.apply(params, jnp.array((x, t)))[0]
 
-	print(u(0, 1))
-	ux = dx(u)
+	#test 1
+	f = lambda x, t: jnp.tanh(x * t)
+	print(type(f(0.2, 0.5)))
+	f_x = dx(f)
+	print(type(f_x(0.2,  0.5)))
+	#test 2
+	print((u(0.0, 1.0))
 	#print(inspect.getargspec(ux))
-	ux
-
+	ux = dx(u)
 	print(type(ux))
 	print(ux(0,1))
