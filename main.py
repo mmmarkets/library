@@ -23,16 +23,21 @@ if __name__ == '__main__':
 	import inspect
 	u_model, params = heat.u()
 	x = jnp.array([float(0), float(1)])
-	u = lambda x, t: u_model.apply(params, jnp.array((x, t)))[0]
-
-	#test 1
-	f = lambda x, t: jnp.tanh(x * t)
-	print(type(f(0.2, 0.5)))
-	f_x = dx(f)
-	print(type(f_x(0.2,  0.5)))
+	u = lambda x, t: u_model.apply(params, jnp.array((x, t)))[0] # this makes this a scalar func
+ 
 	#test 2
-	print((u(0.0, 1.0))
+	print(u(0.0, 1.0))
 	#print(inspect.getargspec(ux))
 	ux = dx(u)
-	print(type(ux))
-	print(ux(0,1))
+	print(dx(dx(u))(0.0, 1.0))
+
+	dx = lambda f: jax.grad(f, argnums=0)
+	dy = lambda f: jax.grad(f, argnums=1)
+
+	f = lambda x, y: x * y * 2 + y * 2
+
+	print(dx(f)(0.0, 1.0))
+	print(dx(dx(f))(0.0, 1.0))
+	print(dy(dx(f))(0.0, 1.0))
+	print(dy(f)(0.0, 1.0))
+	
